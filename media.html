@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Title and Favicon -->
+    <title>Media Gallery - MMUST CU | WESO</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enhanced Media Page Styles -->
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #E8D284;
+            --gold-dark: #B8941F;
+            --dark-blue: #1a365d;
+            --light-blue: #2d5aa0;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        /* Enhanced Upper Section */
+        .upper {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #2c5282 100%);
+            color: white;
+            padding-bottom: 3rem;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 3.5rem;
+            margin: 4rem 0 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+        
+        /* Enhanced Tabs */
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0 auto 2.5rem;
+            padding: 0.75rem 1rem;
+            max-width: 900px;
+            background: var(--light-gray);
+            border-radius: 40px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .tags a {
+            padding: 10px 22px;
+            background: transparent;
+            color: var(--dark-blue);
+            text-decoration: none;
+            border-radius: 28px;
+            font-weight: 600;
+            transition: all 0.22s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid transparent;
+            box-shadow: none;
+        }
+
+        .tags a:hover {
+            background: rgba(26,54,93,0.06);
+            transform: translateY(-3px);
+            color: var(--dark-blue);
+            box-shadow: 0 6px 18px rgba(26,54,93,0.06);
+        }
+
+        /* Active tab: gold with neon/glow outline for contrast */
+        .tags a.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 8px 30px rgba(212,175,55,0.35), 0 0 20px rgba(212,175,55,0.25);
+            text-shadow: 0 0 8px rgba(255,255,255,0.6), 0 0 12px rgba(212,175,55,0.55);
+        }
+
+        .tags a i {
+            font-size: 1.05rem;
+        }
+        
+        /* Media Content Sections */
+        .media-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 3rem 0 2rem;
+            color: var(--dark-blue);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gold), var(--gold-dark));
+            border-radius: 2px;
+        }
+        
+        /* Photos Section */
+        .photosDiv {
+            display: none;
+        }
+        
+        .photosDiv.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .photosDiv #photosViewLess {
+            display: none;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .photosDiv #photosViewLess:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .photosDiv #photosViewLess i {
+            margin-right: 8px;
+        }
+        
+        #photosSelection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .album-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .album-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .album-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--gold);
+        }
+        
+        .album-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.8));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+        
+        .album-card:hover .album-overlay {
+            opacity: 1;
+        }
+        
+        .album-info {
+            color: white;
+            width: 100%;
+        }
+        
+        .album-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .album-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .album-button {
+            background: var(--gold);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .album-button:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Sermons Section */
+        .sermons {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .sermons.active {
+            display: grid;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .sermon-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--gold);
+        }
+        
+        .sermon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .sermon-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .sermon-speaker {
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sermon-date {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .download-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .download-btn {
+            padding: 8px 16px;
+            background: var(--light-gray);
+            border: 2px solid var(--medium-gray);
+            border-radius: 5px;
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+        
+        /* Articles Section */
+        .articles {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .articles.active {
+            display: grid;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .article-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .article-summary {
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .article-author {
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more:hover {
+            color: var(--gold-dark);
+            gap: 12px;
+        }
+        
+        /* Videos Section */
+        .videos {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .videos.active {
+            display: grid;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .video-iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+        
+        .video-content {
+            padding: 1.5rem;
+        }
+        
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-description {
+            color: var(--dark-gray);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .video-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Photo Viewer */
+        .photo-viewer {
+            display: none;
+            margin-top: 3rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .photo-viewer.active {
+            display: block;
+        }
+        
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .viewer-title {
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+        
+        .close-viewer {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-viewer:hover {
+            background: #c82333;
+            transform: rotate(90deg);
+        }
+        
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .photo-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        
+        /* Loading States */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem;
+            min-height: 220px;
+            width: 100%;
+            color: var(--dark-gray);
+        }
+
+        /* Centered error message used by showError() */
+        .error-message {
+            max-width: 720px;
+            margin: 1.5rem auto;
+            padding: 2rem 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+            color: var(--danger);
+            text-align: center;
+        }
+
+        .error-message button {
+            margin-top: 1rem;
+        }
+        
+        .spinner {
+            border: 4px solid var(--medium-gray);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--dark-gray);
+            background: var(--light-gray);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+        }
+        
+        /* Stats Counter */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem auto 3rem;
+            max-width: 800px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: white;
+            margin-top: 4rem;
+            border-radius: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--gold-dark);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: var(--dark-blue);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .tags {
+                flex-direction: column;
+                border-radius: 15px;
+                padding: 1.5rem;
+            }
+            
+            .tags a {
+                justify-content: center;
+            }
+            
+            #photosSelection,
+            .sermons,
+            .articles,
+            .videos {
+                grid-template-columns: 1fr;
+            }
+            
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .video-iframe {
+                height: 200px;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            
+            .stat-item {
+                flex: 1 0 45%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+                margin: 3rem 0 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .cta-section {
+                padding: 3rem 1rem;
+            }
+            
+            .cta-title {
+                font-size: 1.5rem;
+            }
+            
+            .cta-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img src="https://mmustcu.org/img/wesoLogo.jfif" alt="WESO Logo">
+          <h2>WESO</h2>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="wings.html">Wings</a></li>
+          <li><a href="media.html" class="active">Media</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="register.html">Registration</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <section class="media-content">
+            <h2 class="section-title">Media Gallery</h2>
+            <p class="subtitle">
+                Explore our collection of sermons, articles, photos, and videos from WESO activities. 
+                Experience the journey of faith through our media archives.
+            </p>
+            
+            <!-- Stats Counter -->
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="albums-count">0</div>
+                    <div class="stat-label">Photo Albums</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="sermons-count">0</div>
+                    <div class="stat-label">Sermons</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="articles-count">0</div>
+                    <div class="stat-label">Articles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="videos-count">0</div>
+                    <div class="stat-label">Videos</div>
+                </div>
+            </div>
+
+            <!-- Media Tabs -->
+            <div class="tags">
+                <a href="#" class="active" onclick="display('photos')">
+                    <i class="fas fa-images"></i> Photos
+                </a>
+                <a href="#" onclick="display('sermons')">
+                    <i class="fas fa-book-bible"></i> Sermons
+                </a>
+                <a href="#" onclick="display('articles')">
+                    <i class="fas fa-newspaper"></i> Articles
+                </a>
+                <a href="#" onclick="display('videos')">
+                    <i class="fas fa-video"></i> Videos
+                </a>
+            </div>
+
+            <!-- Photos Section -->
+            <div class="photosDiv active" id="photos-section">
+                <button id="photosViewLess" style="display: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Albums
+                </button>
+                <div class="loader" id="photos-loader">
+                    <div class="spinner"></div>
+                    <p>Loading photo albums...</p>
+                </div>
+                <div id="photosSelection" style="display: none;"></div>
+                <div id="no-albums" class="empty-state" style="display: none;">
+                    <i class="fas fa-camera"></i>
+                    <h3>No photo albums available</h3>
+                    <p>Check back soon for photos from our events!</p>
+                </div>
+            </div>
+
+            <!-- Sermons Section -->
+            <div class="sermons" id="sermons-section">
+                <div class="loader" id="sermons-loader">
+                    <div class="spinner"></div>
+                    <p>Loading sermons...</p>
+                </div>
+                <div id="no-sermons" class="empty-state" style="display: none;">
+                    <i class="fas fa-book"></i>
+                    <h3>No sermons available</h3>
+                    <p>Sermon notes will be uploaded here after services.</p>
+                </div>
+            </div>
+
+            <!-- Articles Section -->
+            <div class="articles" id="articles-section">
+                <div class="loader" id="articles-loader">
+                    <div class="spinner"></div>
+                    <p>Loading articles...</p>
+                </div>
+                <div id="no-articles" class="empty-state" style="display: none;">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>No articles yet</h3>
+                    <p>Articles and Bible studies coming soon!</p>
+                </div>
+            </div>
+
+            <!-- Videos Section -->
+            <div class="videos" id="videos-section">
+                <div class="loader" id="videos-loader">
+                    <div class="spinner"></div>
+                    <p>Loading videos...</p>
+                </div>
+                <div id="no-videos" class="empty-state" style="display: none;">
+                    <i class="fas fa-film"></i>
+                    <h3>No videos yet</h3>
+                    <p>Video recordings will be uploaded here.</p>
+                </div>
+            </div>
+
+            <!-- Photo Viewer -->
+            <div class="photo-viewer" id="photo-viewer">
+                <div class="viewer-header">
+                    <h2 class="viewer-title" id="viewer-title"></h2>
+                    <button class="close-viewer" onclick="closePhotoViewer()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="loader" id="album-photos-loader">
+                    <div class="spinner"></div>
+                    <p>Loading photos...</p>
+                </div>
+                <div class="photos-grid" id="photos-grid" style="display: none;"></div>
+                <div id="no-photos" class="empty-state" style="display: none;">
+                    <i class="fas fa-images"></i>
+                    <h3>No photos in this album</h3>
+                    <p>Photos will be uploaded soon.</p>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <h2 class="cta-title">Share Your Media With Us!</h2>
+                <p class="cta-description">
+                    Have photos, videos, or testimonies from WESO events? Share them with our community 
+                    and help us document God's work through our ministry.
+                </p>
+                <a href="contact.html" class="cta-button">
+                    <i class="fas fa-share-alt"></i> Share Your Media
+                </a>
+            </div>
+                </section>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>About WESO</h3>
+                        <p>Western Outreach Ministries is the evangelism department of Masinde Muliro University Christian Union, dedicated to winning souls for Christ across Western Kenya.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="wings.html">Our Wings</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="register.html">Register</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Contact Info</h3>
+                        <p>📍 Masinde Muliro University of Science and Technology</p>
+                        <p>Kakamega, Kenya</p>
+                        <p>📧 Wesommust001@gmail.com</p>
+                        <p>📱 +254 712 345 678</p>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Connect With Us</h3>
+                        <div class="social-icons">
+                            <a href="https://facebook.com/wesommust" target="_blank">f</a>
+                            <a href="https://instagram.com/wesommust" target="_blank">📷</a>
+                            <a href="https://youtube.com" target="_blank">▶️</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Western Outreach Ministries (WESO) - MMUST CU. All rights reserved.</p>
+                    <p>Powered by <strong>Godswill Web Solutions</strong></p>
+                </div>
+            </div>
+        </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="position: relative; max-width: 90%; max-height: 90%;">
+            <button onclick="closeLightbox()" style="position: absolute; top: -40px; right: 0; background: white; color: black; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 20px;">×</button>
+            <img id="lightbox-img" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            <p id="lightbox-caption" style="color: white; text-align: center; margin-top: 1rem;"></p>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Enhanced Media JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize navbar
+            if (typeof initNavbar === 'function') {
+                initNavbar();
+            }
+            
+            // Load initial content
+            loadAllMedia();
+            
+            // Initialize tab switching
+            initTabs();
+        });
+        
+        // Global variables
+        let albums = []; // Store albums from database
+        let currentAlbumPhotos = {}; // Store photos for each album: {folderId: [photos]}
+        let sermons = [];
+        let articles = [];
+        let videos = [];
+        
+        // Error handling function
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `
+                    <div class="error-message" style="text-align: center; padding: 2rem; color: #dc3545;">
+                        <i class="fas fa-exclamation-triangle fa-2x" style="margin-bottom: 1rem;"></i>
+                        <h3>Error Loading Content</h3>
+                        <p>${message}</p>
+                        <button onclick="window.location.reload()" style="margin-top: 1rem; padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize tabs
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tags a');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Get target section
+                    const text = this.textContent.toLowerCase().trim();
+                    let target = 'photos';
+                    if (text.includes('sermons')) target = 'sermons';
+                    if (text.includes('articles')) target = 'articles';
+                    if (text.includes('videos')) target = 'videos';
+                    
+                    // Display section
+                    display(target);
+                });
+            });
+        }
+        
+        // Load all media
+        async function loadAllMedia() {
+            try {
+                await Promise.all([
+                    loadPhotoAlbums(),
+                    loadSermons(),
+                    loadArticles(),
+                    loadVideos()
+                ]);
+            } catch (error) {
+                console.error('Error loading media:', error);
+            }
+        }
+        
+        // Load photo albums from database AND get their photos from Google Drive
+        async function loadPhotoAlbums() {
+            try {
+                // Step 1: Load albums from database
+                const albumsResponse = await fetch('helpers/fetch.php?action=albums');
+                if (!albumsResponse.ok) {
+                    throw new Error(`HTTP error! status: ${albumsResponse.status}`);
+                }
+                
+                const albumsData = await albumsResponse.json();
+                
+                // Check if data is valid
+                if (!albumsData || !Array.isArray(albumsData)) {
+                    throw new Error('Invalid data format received for albums');
+                }
+                
+                albums = albumsData;
+                
+                // Update album count
+                document.getElementById('albums-count').textContent = albums.length;
+                
+                if (albums.length === 0) {
+                    document.getElementById('photos-loader').style.display = 'none';
+                    document.getElementById('no-albums').style.display = 'block';
+                    return;
+                }
+                
+                // Step 2: For each album, get its cover photo from Google Drive
+                const container = document.getElementById('photosSelection');
+                container.innerHTML = '';
+                
+                // Load cover photos for all albums
+                const albumPromises = albums.map(async (album, index) => {
+                    // Try to get first photo from Google Drive for cover
+                    let coverImage = album.cover_image || 'https://mmustcu.org/img/wesoLogo.jfif';
+                    
+                    if (album.folder_id) {
+                        try {
+                            // Get photos from Google Drive for this folder
+                            const photosResponse = await fetch(`http://localhost:5000/api/album-photos?folderId=${album.folder_id}`);
+                            if (photosResponse.ok) {
+                                const photosData = await photosResponse.json();
+                                if (photosData.photos && photosData.photos.length > 0) {
+                                    // Use first photo as cover
+                                    coverImage = photosData.photos[0].thumbnail;
+                                    // Store photos for this album
+                                    currentAlbumPhotos[album.folder_id] = photosData.photos;
+                                }
+                            }
+                        } catch (error) {
+                            console.error(`Error loading cover for album ${album.title}:`, error);
+                            // Keep default cover image
+                        }
+                    }
+                    
+                    // Format date
+                    let eventDate = 'No date';
+                    if (album.event_date) {
+                        const d = new Date(album.event_date);
+                        if (!isNaN(d.getTime())) {
+                            eventDate = d.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
+                    }
+                    
+                    return {
+                        index,
+                        html: `
+                            <div class="album-card">
+                                <img src="${coverImage}" alt="${album.title}" class="album-image">
+                                <div class="album-overlay">
+                                    <div class="album-info">
+                                        <h3 class="album-title">${album.title}</h3>
+                                        <div class="album-date"><i class="far fa-calendar"></i> ${eventDate}</div>
+                                        <a href="#" class="album-button" onclick="openAlbum('${album.folder_id}', '${album.title}', ${album.id}); return false;">
+                                            <i class="fas fa-eye"></i> View Album
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    };
+                });
+                
+                // Wait for all covers to load
+                const albumCards = await Promise.all(albumPromises);
+                
+                // Sort by original index and add to container
+                albumCards.sort((a, b) => a.index - b.index);
+                albumCards.forEach(card => {
+                    container.innerHTML += card.html;
+                });
+                
+                document.getElementById('photos-loader').style.display = 'none';
+                container.style.display = 'grid';
+                
+            } catch (error) {
+                console.error('Error loading albums:', error);
+                showError('photos-loader', 'Failed to load photo albums. Please check your connection and try again.');
+            }
+        }
+        
+        // Open album photos
+        async function openAlbum(folderId, title, albumId) {
+            // Hide albums and show viewer
+            document.getElementById('photosSelection').style.display = 'none';
+            document.getElementById('photosViewLess').style.display = 'block';
+            document.getElementById('photo-viewer').classList.add('active');
+            document.getElementById('viewer-title').textContent = title;
+            
+            // Load photos for this album
+            await loadAlbumPhotos(folderId, albumId);
+        }
+        
+        // Load album photos from Google Drive
+        async function loadAlbumPhotos(folderId, albumId) {
+            try {
+                document.getElementById('album-photos-loader').style.display = 'block';
+                document.getElementById('photos-grid').style.display = 'none';
+                document.getElementById('no-photos').style.display = 'none';
+                
+                let photos = [];
+                
+                // Check if we already loaded photos for this album
+                if (currentAlbumPhotos[folderId]) {
+                    photos = currentAlbumPhotos[folderId];
+                } else {
+                    // Load photos from Google Drive
+                    const response = await fetch(`http://localhost:5000/api/album-photos?folderId=${folderId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.photos && Array.isArray(data.photos)) {
+                        photos = data.photos;
+                        currentAlbumPhotos[folderId] = photos; // Cache for future use
+                    }
+                }
+                
+                document.getElementById('album-photos-loader').style.display = 'none';
+                
+                if (photos.length === 0) {
+                    document.getElementById('no-photos').style.display = 'block';
+                    return;
+                }
+                
+                const container = document.getElementById('photos-grid');
+                container.innerHTML = '';
+                
+                photos.forEach(photo => {
+                    const photoItem = `
+                        <div class="photo-item">
+                            <img src="${photo.thumbnail || photo.url}" 
+                                 alt="${photo.name || 'Photo'}" 
+                                 onclick="openLightbox('${photo.url}', '${photo.name || ''}')"
+                                 loading="lazy">
+                        </div>
+                    `;
+                    container.innerHTML += photoItem;
+                });
+                
+                container.style.display = 'grid';
+                
+            } catch (error) {
+                console.error('Error loading album photos:', error);
+                showError('album-photos-loader', 'Failed to load photos for this album. Please try again later.');
+            }
+        }
+        
+        // Load sermons
+        async function loadSermons() {
+            try {
+                const response = await fetch('helpers/fetch.php?action=sermons');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (!data || !Array.isArray(data)) {
+                    throw new Error('Invalid data format received');
+                }
+                
+                sermons = data;
+                
+                document.getElementById('sermons-loader').style.display = 'none';
+                document.getElementById('sermons-count').textContent = sermons.length;
+                
+                if (sermons.length === 0) {
+                    document.getElementById('no-sermons').style.display = 'block';
+                    return;
+                }
+                
+                const container = document.querySelector('.sermons');
+                container.innerHTML = '';
+                
+                sermons.forEach(sermon => {
+                    // Format date
+                    let sermonDate = 'No date';
+                    if (sermon.date) {
+                        const d = new Date(sermon.date);
+                        if (!isNaN(d.getTime())) {
+                            sermonDate = d.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                        }
+                    }
+                    
+                    // Create download links
+                    let downloadLinks = '';
+                    if (sermon.pdf_url) {
+                        downloadLinks += `<a href="${sermon.pdf_url}" class="download-btn" target="_blank" download>
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>`;
+                    }
+                    if (sermon.ppt_url) {
+                        downloadLinks += `<a href="${sermon.ppt_url}" class="download-btn" target="_blank" download>
+                            <i class="fas fa-file-powerpoint"></i> PPT
+                        </a>`;
+                    }
+                    
+                    const sermonCard = `
+                        <div class="sermon-card">
+                            <h3 class="sermon-title">${sermon.title}</h3>
+                            <div class="sermon-speaker">
+                                <i class="fas fa-user"></i> ${sermon.speaker || 'Speaker'}
+                            </div>
+                            <div class="sermon-date">
+                                <i class="far fa-calendar-alt"></i> ${sermon.day || ''} • ${sermonDate}
+                            </div>
+                            ${downloadLinks ? `<div class="download-links">${downloadLinks}</div>` : ''}
+                        </div>
+                    `;
+                    
+                    container.innerHTML += sermonCard;
+                });
+                
+            } catch (error) {
+                console.error('Error loading sermons:', error);
+                showError('sermons-loader', 'Failed to load sermons. Please try again later.');
+            }
+        }
+        
+        // Load articles
+        async function loadArticles() {
+            try {
+                const response = await fetch('helpers/fetch.php?action=articles');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (!data || !Array.isArray(data)) {
+                    throw new Error('Invalid data format received');
+                }
+                
+                articles = data;
+                
+                document.getElementById('articles-loader').style.display = 'none';
+                document.getElementById('articles-count').textContent = articles.length;
+                
+                if (articles.length === 0) {
+                    document.getElementById('no-articles').style.display = 'block';
+                    return;
+                }
+                
+                const container = document.querySelector('.articles');
+                container.innerHTML = '';
+                
+                articles.forEach(article => {
+                    const articleCard = `
+                        <div class="article-card">
+                            <h3 class="article-title">${article.title}</h3>
+                            <p class="article-summary">${article.summary || 'Click to read more...'}</p>
+                            <div class="article-author">
+                                <i class="fas fa-user-edit"></i> By ${article.author || 'WESO Team'}
+                            </div>
+                            <a href="${article.link}" class="read-more" target="_blank">
+                                Read Full Article <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    `;
+                    
+                    container.innerHTML += articleCard;
+                });
+                
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                showError('articles-loader', 'Failed to load articles. Please try again later.');
+            }
+        }
+        
+        // Load videos
+        async function loadVideos() {
+            try {
+                const response = await fetch('helpers/fetch.php?action=videos');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (!data || !Array.isArray(data)) {
+                    throw new Error('Invalid data format received');
+                }
+                
+                videos = data;
+                
+                document.getElementById('videos-loader').style.display = 'none';
+                document.getElementById('videos-count').textContent = videos.length;
+                
+                if (videos.length === 0) {
+                    document.getElementById('no-videos').style.display = 'block';
+                    return;
+                }
+                
+                const container = document.querySelector('.videos');
+                container.innerHTML = '';
+                
+                videos.forEach(video => {
+                    // Format date
+                    let videoDate = '';
+                    if (video.date) {
+                        const d = new Date(video.date);
+                        if (!isNaN(d.getTime())) {
+                            videoDate = d.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
+                    }
+                    
+                    // Convert YouTube/Vimeo URL to embed URL if needed
+                    let embedUrl = video.embed_url || video.url || '';
+                    if (embedUrl.includes('youtube.com/watch?v=')) {
+                        const videoId = embedUrl.split('v=')[1].split('&')[0];
+                        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    } else if (embedUrl.includes('youtu.be/')) {
+                        const videoId = embedUrl.split('youtu.be/')[1].split('?')[0];
+                        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    } else if (embedUrl.includes('vimeo.com/')) {
+                        const videoId = embedUrl.split('vimeo.com/')[1].split('?')[0];
+                        embedUrl = `https://player.vimeo.com/video/${videoId}`;
+                    }
+                    
+                    const videoCard = `
+                        <div class="video-card">
+                            <iframe 
+                                src="${embedUrl}" 
+                                class="video-iframe"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                            <div class="video-content">
+                                <h3 class="video-title">${video.title}</h3>
+                                ${videoDate ? `<div class="video-date"><i class="far fa-calendar"></i> ${videoDate}</div>` : ''}
+                                ${video.description ? `<p class="video-description">${video.description}</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.innerHTML += videoCard;
+                });
+                
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                showError('videos-loader', 'Failed to load videos. Please try again later.');
+            }
+        }
+        
+        // Close photo viewer
+        function closePhotoViewer() {
+            document.getElementById('photo-viewer').classList.remove('active');
+            document.getElementById('photosViewLess').style.display = 'none';
+            document.getElementById('photosSelection').style.display = 'grid';
+        }
+        
+        // Open lightbox
+        function openLightbox(imageUrl, imageName) {
+            document.getElementById('lightbox-img').src = imageUrl;
+            document.getElementById('lightbox-caption').textContent = imageName;
+            document.getElementById('lightbox').style.display = 'flex';
+            
+            // Close on ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        }
+        
+        // Close lightbox
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+        
+        // Display section
+        function display(section) {
+            // Hide all sections
+            document.querySelectorAll('.photosDiv, .sermons, .articles, .videos').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('photo-viewer').classList.remove('active');
+            document.getElementById('photosViewLess').style.display = 'none';
+            
+            // Show selected section
+            if (section === 'photos') {
+                document.getElementById('photosSelection').style.display = 'grid';
+                document.querySelector('.photosDiv').classList.add('active');
+            } else if (section === 'sermons') {
+                document.querySelector('.sermons').classList.add('active');
+            } else if (section === 'articles') {
+                document.querySelector('.articles').classList.add('active');
+            } else if (section === 'videos') {
+                document.querySelector('.videos').classList.add('active');
+            }
+            
+            // Update URL hash
+            window.location.hash = section;
+        }
+        
+        // Check URL hash on load
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1);
+            if (['photos', 'sermons', 'articles', 'videos'].includes(hash)) {
+                display(hash);
+                
+                // Update active tab
+                document.querySelectorAll('.tags a').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.textContent.toLowerCase().includes(hash)) {
+                        tab.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - WESO | MMUST CU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Additional styles for contact page */
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+    .contact-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    
+    .contact-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+    }
+    
+    .contact-form-container {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+    
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .submit-button {
+      background: linear-gradient(135deg, var(--gold), #d4a017);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .submit-button:hover {
+      background: linear-gradient(135deg, #d4a017, var(--gold));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .submit-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .message-alert {
+      padding: 15px;
+      margin: 1rem 0;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+    
+    .message-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .message-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .required::after {
+      content: " *";
+      color: #dc3545;
+    }
+    
+    .map-container {
+      margin-top: 3rem;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .bible-verse {
+      text-align: center;
+      font-style: italic;
+      color: #555;
+      font-size: 1.2rem;
+      padding: 2rem;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.1);
+      margin: 3rem auto 0;
+    }
+    
+    .reference {
+      margin-top: 0.5rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    
+    @media (max-width: 768px) {
+      .contact-form-container {
+        padding: 1.5rem;
+      }
+      
+      .contact-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="https://mmustcu.org/img/wesoLogo.jfif" alt="WESO Logo">
+        <h2>WESO</h2>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="wings.html">Wings</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="register.html">Registration</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top: 8rem; background: #f5f5f5; min-height: 100vh;">
+    <div class="container">
+      <h2 class="section-title fade-in">Contact WESO</h2>
+      <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; font-size: 1.1rem;" class="fade-in">
+        Have questions, suggestions, or want to partner with us? We'd love to hear from you! 
+        Reach out to us through any of the channels below.
+      </p>
+
+      <!-- Message Display Area -->
+      <div id="messageContainer" class="message-alert" style="max-width: 800px; margin: 0 auto 2rem;"></div>
+
+      <div class="contact-container">
+        <!-- Contact Information -->
+        <div class="contact-info fade-in">
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <h3>Location</h3>
+            <p>Masinde Muliro University of Science and Technology</p>
+            <p>Kakamega, Kenya</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">📧</div>
+            <h3>Email</h3>
+            <p>Wesommust001@gmail.com</p>
+            <p>wesommust@mmustcu.org</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">📱</div>
+            <h3>Phone</h3>
+            <p>+254 712 345 678</p>
+            <p>+254 723 456 789</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">⏰</div>
+            <h3>Office Hours</h3>
+            <p>Monday - Friday: 8:00 AM - 5:00 PM</p>
+            <p>Saturday: 9:00 AM - 1:00 PM</p>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-container fade-in">
+          <h3 style="text-align: center; margin-bottom: 2rem; color: var(--gold);">Send Us a Message</h3>
+          
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name" class="required">Your Name</label>
+              <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="required">Your Email</label>
+              <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="What is this regarding?">
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="required">Message</label>
+              <textarea id="message" name="message" required placeholder="Type your message here..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">Send Message</button>
+            
+            <div style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+              <p>We typically respond within 24-48 hours.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Location Map -->
+        <div class="map-container fade-in">
+          <h3 style="text-align: center; margin-bottom: 1rem; color: var(--gold);">Our Location</h3>
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.648863508645!2d34.75286757488842!3d0.2853218641682605!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1780286c5f376757%3A0xca8d4b3e5e71f031!2sMasinde%20Muliro%20University%20of%20Science%20and%20Technology!5e0!3m2!1sen!2ske!4v1705000000000!5m2!1sen!2ske" 
+            width="100%" 
+            height="400" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+
+        <div class="bible-verse fade-in" style="margin-top: 3rem;">
+          "For I know the plans I have for you,' declares the LORD, 'plans to prosper you and not to harm you, plans to give you hope and a future."
+          <div class="reference">— Jeremiah 29:11</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About WESO</h3>
+          <p>Western Outreach Ministries is the evangelism department of Masinde Muliro University Christian Union, dedicated to winning souls for Christ across Western Kenya.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="wings.html">Our Wings</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <p>📍 Masinde Muliro University of Science and Technology</p>
+          <p>Kakamega, Kenya</p>
+          <p>📧 Wesommust001@gmail.com</p>
+          <p>📱 +254 712 345 678</p>
+        </div>
+        <div class="footer-section">
+          <h3>Connect With Us</h3>
+          <div class="social-icons">
+            <a href="https://facebook.com/wesommust" target="_blank">f</a>
+            <a href="https://instagram.com/wesommust" target="_blank">📷</a>
+            <a href="https://youtube.com" target="_blank">▶️</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Western Outreach Ministries (WESO) - MMUST CU. All rights reserved.</p>
+        <p>Powered by <strong>Godswill Web Solutions</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contactForm');
+      const messageContainer = document.getElementById('messageContainer');
+      
+      // Function to show message
+      function showMessage(message, type = 'success') {
+        console.log(`Message [${type}]:`, message);
+        messageContainer.innerHTML = message;
+        messageContainer.className = `message-alert message-${type}`;
+        messageContainer.style.display = 'block';
+        
+        // Scroll to message
+        messageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto hide after 10 seconds
+        setTimeout(() => {
+          messageContainer.style.display = 'none';
+        }, 10000);
+      }
+      
+      // Form validation
+      function validateForm(data) {
+        const errors = [];
+        
+        // Required fields
+        if (!data.name.trim()) errors.push('Name is required');
+        if (!data.email.trim()) errors.push('Email is required');
+        if (!data.message.trim()) errors.push('Message is required');
+        
+        // Email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (data.email && !emailRegex.test(data.email)) {
+          errors.push('Please enter a valid email address');
+        }
+        
+        return errors;
+      }
+      
+      // Form submission
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log("Contact form submitted");
+        
+        const submitButton = form.querySelector('.submit-button');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        console.log("Contact form data:", data);
+        
+        // Validate
+        const validationErrors = validateForm(data);
+        if (validationErrors.length > 0) {
+          showMessage(validationErrors.join('<br>'), 'error');
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+          return;
+        }
+        
+        try {
+          // Send to PHP backend
+          const response = await fetch('php/contact.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          console.log("Server response:", result);
+          
+          if (result.success) {
+            showMessage(`✅ ${result.message}<br>Message ID: ${result.id}`, 'success');
+            form.reset();
+            
+            // Optional: Redirect after successful message
+            // setTimeout(() => {
+            //   window.location.href = 'thank-you.html';
+            // }, 3000);
+          } else {
+            showMessage(`❌ ${result.message}`, 'error');
+          }
+        } catch (error) {
+          console.error('Contact form error:', error);
+          showMessage('❌ Network error. Please check your connection and try again.', 'error');
+          
+          // Check if file exists
+          try {
+            await fetch('php/contact.php');
+          } catch (fileError) {
+            showMessage('❌ php/contact.php file not found. Make sure it exists in the php folder.', 'error');
+          }
+        } finally {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }
+      });
+      
+      // Real-time validation
+      form.addEventListener('input', function(e) {
+        const input = e.target;
+        if (input.hasAttribute('required') && input.value.trim() === '') {
+          input.style.borderColor = '#dc3545';
+        } else {
+          input.style.borderColor = '#ddd';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
